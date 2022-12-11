@@ -9,3 +9,5 @@ This project is open to contributions. To run the application, you should have a
 ```npm install```
 
 ```npm start```
+
+Enjoy!
