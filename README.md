@@ -7,4 +7,5 @@ At this point, decision trees for classification are implemented. It is possible
 This project is open to contributions. To run the application, you should have a recent version of NodeJS, and then run the following commands:
 
 ```npm install```
+
 ```npm start```
