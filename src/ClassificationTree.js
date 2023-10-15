@@ -439,7 +439,7 @@ class ClassificationTree extends React.Component {
         let datasetIndices = [];
 
         data[selectedAttribute.columnName].forEach((row, i) => {
-            let isTrue = (datatype === DATATYPE_CATEGORICAL) ? columnComparisonCallback(row, comparison, selectedAttribute.attribute) : columnComparisonCallback(row, comparison, selectedAttribute.attribute);
+            let isTrue = columnComparisonCallback(row, comparison, selectedAttribute.attribute);
 
             if (isTrue) {
                 datasetIndices.push(i);
