@@ -104,7 +104,7 @@ const HACKEREARTH_DATASET = {
 }
 
 /**
- * This class implements the decision tree generation logic
+ * This class defines the properties of a single decision tree node
  */
 class DecisionTreeNode extends React.Component {
     constructor(props) {

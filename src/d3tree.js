@@ -157,12 +157,6 @@ function update(root, element) {
                 allowHTML: true,
                 placement: 'bottom',
                 onShow(instance) {
-                    //let reportDiv = document.querySelector(`#report_${id}`);
-                    console.log(`#report_${id}`)
-                    //const impurityCalculationLeft = new MathfieldElement();
-                    //impurityCalculationLeft.value = nodeAttributes[id].impurityCalculationLeft;
-                    //reportDiv.appendChild(impurityCalculationLeft);
-
                     nodeAttributes[id].dataset.ids.forEach(rowId => {
                         const row = document.querySelector(`#row_${rowId}`);
                         row.childNodes.forEach(child => {
