@@ -141,8 +141,6 @@ const columnComparisonCallback = (value, comparison, columnValue) => {
             return value <= columnValue;
         case COMPARISON_GREATER_THAN:
             return value > columnValue;
-        default:
-            return null;
     }
 }
 
@@ -305,8 +303,6 @@ class ClassificationTree extends React.Component {
                         leftImpurityResultText = `Error(${column}=${columnValue})=${impurityLeft.impurityCalculationText}=${Math.round(impurityLeft.finalImpurity * 100) / 100}`;
                         rightImpurityResultText = `Error(${column}!=${columnValue})=${impurityRight.impurityCalculationText}=${Math.round(impurityRight.finalImpurity * 100) / 100}`;
                         break;
-                    default:
-                        break;
                 }
 
                 let impurityValue = impurityLeft.columnProbability * impurityLeft.finalImpurity + impurityRight.columnProbability *  impurityRight.finalImpurity; 
@@ -339,8 +335,6 @@ class ClassificationTree extends React.Component {
                     case IMPURITY_MISCLASSIFICATION_ERROR:
                         leftImpurityResultText = `Error(${column}<=${midpoint})=${impurityLeft.impurityCalculationText}=${Math.round(impurityLeft.finalImpurity * 100) / 100}`;
                         rightImpurityResultText = `Error(${column}>${midpoint})=${impurityRight.impurityCalculationText}=${Math.round(impurityRight.finalImpurity * 100) / 100}`;
-                        break;
-                    default:
                         break;
                 }
 
@@ -611,8 +605,6 @@ class ClassificationTree extends React.Component {
                     tree: {},
                     dataset: HACKEREARTH_DATASET
                 });
-                break;
-            default:
                 break;
         }
     }
