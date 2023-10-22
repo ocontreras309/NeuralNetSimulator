@@ -577,32 +577,10 @@ class ClassificationTree extends React.Component {
     handleDatasetChange(event) {
         this.datasetname = event.target.value;
         this.historyActive = false;
-        switch (event.target.value) {
-            case "XOR":
-                this.setState({
-                    tree: {},
-                    dataset: XOR_DATASET
-                });
-                break;
-            case "Animals":
-                this.setState({
-                    tree: {},
-                    dataset: ANIMALS_DATASET
-                });
-                break;
-            case "Borrowers":
-                this.setState({
-                    tree: {},
-                    dataset: BORROWERS_DATASET
-                });
-                break;
-            case "HackerEarth":
-                this.setState({
-                    tree: {},
-                    dataset: HACKEREARTH_DATASET
-                });
-                break;
-        }
+        this.setState({
+            tree: {},
+            dataset: datasets[event.target.value]
+        });
     }
 
     /**
