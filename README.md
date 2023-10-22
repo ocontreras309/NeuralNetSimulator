@@ -10,4 +10,4 @@ This project is open to contributions. To run the application, you should have a
 
 ```npm start```
 
-Enjoy!
+Enjoy yourselves!
