@@ -225,8 +225,6 @@ class ClassificationTree extends React.Component {
                             }
                             impurityResult.impurityCalculationText += `,${probText}`;
                             break;
-                        default:
-                            break;
                     }
                 }
             }
@@ -246,8 +244,6 @@ class ClassificationTree extends React.Component {
             case IMPURITY_MISCLASSIFICATION_ERROR:
                 finalImpurity = 1 - impurity;
                 impurityResult.impurityCalculationText = `1-\\max\\begin{pmatrix}${impurityResult.impurityCalculationText.substring(1)}\\end{pmatrix}`;
-            default:
-                break;
         }
 
         impurityResult.columnProbability = total / totalRecords;
