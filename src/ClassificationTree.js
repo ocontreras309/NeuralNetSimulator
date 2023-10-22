@@ -15,13 +15,6 @@ const IMPURITY_MISCLASSIFICATION_ERROR = 3;
 const DIRECTION_LEFT = 1;
 const DIRECTION_RIGHT = 2;
 
-const datasets = [
-    'XOR',
-    'Borrowers',
-    'Animals',
-    'HackerEarth'
-];
-
 const impurityMeasures = [
     IMPURITY_ENTROPY,
     IMPURITY_GINI,
@@ -103,6 +96,13 @@ const HACKEREARTH_DATASET = {
     }
 }
 
+const datasets = {
+    'XOR': XOR_DATASET,
+    'Borrowers': BORROWERS_DATASET,
+    'Animals': ANIMALS_DATASET,
+    'HackerEarth': HACKEREARTH_DATASET
+};
+
 /**
  * This class defines the properties of a single decision tree node
  */
@@ -156,27 +156,11 @@ class ClassificationTree extends React.Component {
             tree: {}
         }
         this.impurityType = IMPURITY_ENTROPY;
-        this.datasetname = datasets[0];
+        this.datasetname = 'XOR';
         this.history = [];
         this.historyActive = false;
         this.idCount = 1;
-
-        switch (this.datasetname) {
-            case "XOR":
-                this.state.dataset = XOR_DATASET;
-                break;
-            case "Animals":
-                this.state.dataset = ANIMALS_DATASET;
-                break;
-            case "Borrowers":
-                this.state.dataset = BORROWERS_DATASET;
-                break;
-            case "HackerEarth":
-                this.state.dataset = HACKEREARTH_DATASET;
-                break;
-            default:
-                break;
-        }
+        this.state.dataset = datasets[this.datasetname];
     }
 
     /**
@@ -822,7 +806,7 @@ class ClassificationTree extends React.Component {
                                 <label className='form-label'>Choose a dataset:</label>
                                 <select className='form-control' onChange={ event => this.handleDatasetChange(event) }>
                                     {
-                                        datasets.map((dataset, i) => (
+                                        Object.keys(datasets).map((dataset, i) => (
                                             <option key={ `dataset_${i}` } value={ dataset }>{ dataset }</option>
                                         ))
                                     }
