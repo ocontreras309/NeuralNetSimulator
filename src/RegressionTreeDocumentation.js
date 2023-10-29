@@ -39,7 +39,7 @@ class RegressionTreeDocumentation extends React.Component {
                             we use the variance, whose mathematical expression is:
                         </div>
                         <div style={{ textAlign: 'justify' }}>
-                            <MathComponent tex={ String.raw`\text{Variance}=\frac{\sum_k(y_i-\bar y)^2}{n}` } />
+                            <MathComponent tex={ String.raw`\text{Variance}=\frac{\sum_i(y_i-\bar y)^2}{n}` } />
                         </div>
                         <div style={{ textAlign: 'justify' }}>
                             That is, for all target values belonging to a particular partition, we should calculate
