@@ -69,6 +69,13 @@
   margin-top: 10px;
 }
 
+.display-area {
+  border-width: 2px;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: #aaa;
+}
+
 .App-main {
   background-color: #ffffff;
   min-height: 100vh;

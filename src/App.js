@@ -33,14 +33,15 @@ function App() {
 
   return (
     <div className='App-main'>
-      <div className='container p-3 text-white rounded banner'>
-        <h1>Simulator app</h1>
+      <div className='container p-3 text-white rounded banner w-100 d-flex'>
+        <h1>Learn Machine Learning</h1>
+        <img src='robot.png' className='ms-auto' />
       </div>
       <div class="container d-flex flex-row p-3">
         <button className={ (contentId === OPT_CLASSIFICATION_TREE) ? "btn btn-secondary w-100 rounded-pill menu-button mx-2" : "btn btn-info w-100 rounded-pill menu-button mx-2" } onClick={ () => handleClick(OPT_CLASSIFICATION_TREE) }>Classification tree</button>
         <button className={ (contentId === OPT_REGRESSION_TREE) ? "btn btn-secondary w-100 rounded-pill menu-button mx-2" : "btn btn-info w-100 rounded-pill menu-button mx-2" } onClick={ () => handleClick(OPT_REGRESSION_TREE) }>Regression tree</button>
       </div>
-      <div>
+      <div className='container display-area'>
         <Fade in={ fadeIn } timeout={ timeout }>
           <div id="mainContent">
             {

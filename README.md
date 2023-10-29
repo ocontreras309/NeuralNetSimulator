@@ -1,4 +1,4 @@
-# Neural Network Simulator
+# Learn Machine Learning with this App!
 
 The aim of this project is to offer students an educational aid to learn about Machine Learning algorithms.
 
