@@ -405,6 +405,9 @@ class RegressionTree extends React.Component {
         let rightNode = this.createTreeNode(node.dataset, selectedAttribute, DIRECTION_RIGHT);
 
         node.label = node.dataset.datatypes[selectedAttribute.columnName] === DATATYPE_CATEGORICAL ? `${selectedAttribute.columnName} = ${selectedAttribute.attribute}` : `${selectedAttribute.columnName} <= ${selectedAttribute.attribute}`;
+        node.bestFeature = selectedAttribute.columnName;
+        node.bestFeatureType = node.dataset.datatypes[selectedAttribute.columnName];
+        node.bestFeatureValue = selectedAttribute.attribute;
         node.impurity = selectedAttribute.impurity;
         node.impurityCalculationLeft = selectedAttribute.impurityCalculationLeft;
         node.impurityCalculationRight = selectedAttribute.impurityCalculationRight;
@@ -429,6 +432,9 @@ class RegressionTree extends React.Component {
             left: leftNode,
             right: rightNode,
             label: this.state.dataset.datatypes[selectedAttribute.columnName] === DATATYPE_CATEGORICAL ? `${selectedAttribute.columnName} = ${selectedAttribute.attribute}` : `${selectedAttribute.columnName} <= ${selectedAttribute.attribute}`,
+            bestFeature: selectedAttribute.columnName,
+            bestFeatureType: this.state.dataset.datatypes[selectedAttribute.columnName],
+            bestFeatureValue: selectedAttribute.attribute,
             impurity: selectedAttribute.impurity,
             impurityCalculationLeft: selectedAttribute.impurityCalculationLeft,
             impurityCalculationRight: selectedAttribute.impurityCalculationRight,
@@ -464,6 +470,9 @@ class RegressionTree extends React.Component {
 
         if (originalNode.left) {
             nodeAttributes[treeNodeLeft.id] = {
+                bestFeature: originalNode.left.bestFeature,
+                bestFeatureType: originalNode.left.bestFeatureType,
+                bestFeatureValue: originalNode.left.bestFeatureValue,
                 impurity: originalNode.left.impurity,
                 impurityCalculationLeft: originalNode.left.impurityCalculationLeft,
                 impurityCalculationRight: originalNode.left.impurityCalculationRight,
@@ -475,6 +484,9 @@ class RegressionTree extends React.Component {
 
         if (originalNode.right) {
             nodeAttributes[treeNodeRight.id] = {
+                bestFeature: originalNode.right.bestFeature,
+                bestFeatureType: originalNode.right.bestFeatureType,
+                bestFeatureValue: originalNode.right.bestFeatureValue,
                 impurity: originalNode.right.impurity,
                 impurityCalculationLeft: originalNode.right.impurityCalculationLeft,
                 impurityCalculationRight: originalNode.right.impurityCalculationRight,
@@ -536,6 +548,9 @@ class RegressionTree extends React.Component {
             impurity: root.impurity,
             dataset: root.dataset,
             name: rootNode.name,
+            bestFeature: root.bestFeature,
+            bestFeatureType: root.bestFeatureType,
+            bestFeatureValue: root.bestFeatureValue,
             impurityCalculationLeft: root.impurityCalculationLeft,
             impurityCalculationRight: root.impurityCalculationRight,
             impurityCalculationTotal: root.impurityCalculationTotal

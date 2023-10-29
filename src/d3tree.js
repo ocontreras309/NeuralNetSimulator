@@ -1,6 +1,10 @@
 import d3 from 'd3';
 import tippy from 'tippy.js';
 import { MathfieldElement } from 'mathlive';
+
+const DATASET_SIDE_LEFT = 'left';
+const DATASET_SIDE_RIGHT = 'right';
+
 var node = document.createElement('div');
 var nodeAttributes = {};
 
@@ -24,6 +28,18 @@ var svg;
 /**
  * Generate node generation data, including the dataset as well as impurity calculations
  */
+
+function getDatasetSide(dataset, index, bestFeature, bestValue) {
+    console.log(dataset, index, bestFeature, bestValue)
+    
+    if (bestFeature === undefined) {
+        return null;
+    }
+
+    return (dataset.datatypes[bestFeature] === 'continuous') ? 
+                (dataset.data[bestFeature][index] <= bestValue) ? DATASET_SIDE_LEFT : DATASET_SIDE_RIGHT :
+                (dataset.data[bestFeature][index] === bestValue) ? DATASET_SIDE_LEFT : DATASET_SIDE_RIGHT;
+}
 
 function generateNodeData(reportId, impurityReport, dataset) {
     const div = document.createElement('div');
@@ -70,17 +86,22 @@ function generateNodeData(reportId, impurityReport, dataset) {
         const th = document.createElement('th');
         th.style.borderStyle = 'solid';
         th.style.borderWidth = '1px';
-        th.style.borderColor = '#000';
+        th.style.borderColor = '#fff';
         th.style.textAlign = 'center';
+        th.style.color = 'white';
+        th.style.backgroundColor = '#058';
         th.innerHTML = columnName;
+
         firstRow.appendChild(th);
     }
 
     const thTarget = document.createElement('th');
     thTarget.style.borderStyle = 'solid';
     thTarget.style.borderWidth = '1px';
-    thTarget.style.borderColor = '#000';
+    thTarget.style.borderColor = '#fff';
     thTarget.style.textAlign = 'center';
+    thTarget.style.backgroundColor = '#058';
+    thTarget.style.color = 'white';
     thTarget.innerHTML = targetName;
 
     firstRow.appendChild(thTarget);
@@ -88,22 +109,29 @@ function generateNodeData(reportId, impurityReport, dataset) {
 
     for (const i in dataset.target[targetName]) {
         const row = document.createElement('tr');
+        let side = getDatasetSide(dataset, i, impurityReport.bestFeature, impurityReport.bestFeatureValue);
 
         for (const columnName in dataset.data) {
             const td = document.createElement('td');
             td.style.borderStyle = 'solid';
+            td.style.color = '#fff';
             td.style.borderWidth = '1px';
-            td.style.borderColor = '#000';
+            td.style.borderColor = '#fff';
             td.style.textAlign = 'center';
+            td.style.backgroundColor = (side === DATASET_SIDE_LEFT) ? '#a52' : '#32a';
             td.innerHTML = dataset.data[columnName][i];
+
             row.appendChild(td);
         }
 
         const tdTarget = document.createElement('td');
         tdTarget.style.borderStyle = 'solid';
         tdTarget.style.borderWidth = '1px';
-        tdTarget.style.borderColor = '#000';
+        tdTarget.style.borderColor = '#fff';
         tdTarget.style.textAlign = 'center';
+        tdTarget.style.color = '#fff';
+        tdTarget.style.fontWeight = 'bold';
+        tdTarget.style.backgroundColor = (side === DATASET_SIDE_LEFT) ? '#a52' : '#32a';
         tdTarget.innerHTML = dataset.target[targetName][i];
         row.appendChild(tdTarget);
         table.appendChild(row);
