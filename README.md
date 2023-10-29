@@ -12,4 +12,21 @@ This project is open to contributions. To run the application, you should have a
 
 ```npm start```
 
+Special thanks to my students at Univalle, who contributed with interesting improvements and suggestions:
+
+* Luciana Blanco Aranibar
+* Alicia Virreira Idina
+* Dorian Choque Calderón
+* Fernando Aparicio Estrada
+* Nicolas Meneses Barbery
+* Cristian Bueno Luna
+* Rafael Jaillita Jauregui
+* Santiago Jaldin Perez
+* Fernando Jimenez Mamani
+* David Calvi Arce
+* Alan Montaño Cruz
+* Adriana Farfan Llanos
+* Rodrigo Ancalle Carrillo
+* Heidi Huanca Chambi
+
 Enjoy!
