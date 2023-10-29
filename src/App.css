@@ -9,16 +9,53 @@
 
 .node circle {
   fill: #fff;
-  stroke: steelblue;
-  stroke-width: 3px;
+  stroke: #853;
+  stroke-width: 4px;
+}
+
+.documentation-text {
+  font-family: "Century Gothic";
 }
 
 .node text { font: 12px sans-serif; }
 
+.dataset {
+  width: 100%;
+  color: #fff;
+}
+
+.documentation-dataset tr th, .documentation-dataset tr td {
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  text-align: center;
+}
+
+.header-row {
+  background-color: #039;
+}
+
+.row-normal {
+  background-color: #05b;
+  border-style: solid;
+  border-color: #2f8;
+  margin: 3px;
+  padding: 3px;
+}
+
+.row-glowing {
+  box-shadow: 0 0 20px rgb(255, 255, 255);
+  background-color: #a03;
+  border-style: solid;
+  border-color: #2f8;
+  margin: 3px;
+  padding: 3px;
+}
+
 .link {
   fill: none;
-  stroke: #ccc;
-  stroke-width: 2px;
+  stroke: #853;
+  stroke-width: 4px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -27,12 +64,15 @@
   }
 }
 
+.banner {
+  background-color: #05b;
+  margin-top: 10px;
+}
+
 .App-main {
-  background-color: #aaa;
+  background-color: #ffffff;
   min-height: 100vh;
-  /*flex-direction: column;
-  align-items: center;
-  justify-content: center;*/
+  font-family: "Century Gothic";
 }
 
 .App-graph {
@@ -72,17 +112,34 @@
   color: white;
 }
 
+.rounded-button {
+  background-color: #059;
+  color: white;
+  border-radius: 100%;
+  border-width: 0px;
+  width: 40px;
+  height: 40px;
+  margin: 7px;
+}
 
+.rounded-button:disabled {
+  background-color: #677;
+  color: white;
+  border-radius: 100%;
+  border-width: 0px;
+  width: 40px;
+  height: 40px;
+  margin: 7px;
+}
+
+.extended-height {
+  height: 1000px;
+}
 
 .App-link {
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.small-directions {
+  font-size: 9pt;
 }

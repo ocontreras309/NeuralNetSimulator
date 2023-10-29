@@ -7,7 +7,7 @@ var nodeAttributes = {};
 d3.select(node);
 
 // ************** Generate the tree diagram	 *****************
-var margin = {top: 40, right: 0, bottom: 0, left: 0},
+var margin = {top: 40, right: 0, bottom: 0, left: 100},
     width = window.innerWidth / 3 - margin.right - margin.left,
     height = window.innerHeight / 2 - margin.top - margin.bottom;
     
@@ -30,11 +30,15 @@ function generateNodeData(reportId, impurityReport, dataset) {
     const innerContent = document.createElement('div');
     innerContent.className = 'bg-light p-3';
     innerContent.style.width = '700px';
-    
+
+    innerContent.style.border = "solid";
+    innerContent.style.borderWidth = "3px";
+    innerContent.style.borderColor = "#058";
+    innerContent.style.fontFamily = "Century Gothic";
     div.appendChild(innerContent);
 
     const title = document.createElement('h5');
-    title.innerHTML = "Impurity calculation details:";
+    title.innerHTML = "<strong>Impurity calculation details:</strong><p class='small-directions'>Click anywhere to dismiss this dialog.</p>";
 
     const impurityCalculationLeft = document.createElement('div');
     impurityCalculationLeft.innerHTML = `<math-field>${impurityReport.impurityCalculationLeft}</math-field>`;
@@ -120,7 +124,7 @@ function update(root, element) {
 
     svg = d3.select(element).append("svg")
         .attr("width", width + margin.right + margin.left)
-        .attr("height", height * 1.2 + margin.top + margin.bottom)
+        .attr("height", height * 2 + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         
@@ -143,32 +147,39 @@ function update(root, element) {
         .attr("class", "node")
         .style("opacity", function(d) { return (d.name) ? 1 : 0 })
         .attr("transform", function(d) { 
-            return "translate(" + d.x + "," + d.y + ")"; });
+            return "translate(" + d.x + "," + d.y + ")"; 
+        });
 
     nodeEnter.append("circle")
-        .attr("r", 10)
-        .style("fill", "#fff");
+        .attr("r", 20)
+        .style("fill", function(d) {
+            return d.children || d._children ? '#26a' : '#6c2'; 
+        });
 
     for (let id in nodeAttributes) {
         let node = document.querySelector(`#node_${id}`);
+        let circle = document.querySelector(`#node_${id} > circle`);
         if (nodeAttributes[id].impurity !== undefined && node && node.style.opacity !== '0') {
             tippy(`#node_${id}`, {
+                trigger: 'click',
                 content: generateNodeData(`report_${id}`, nodeAttributes[id], nodeAttributes[id].dataset),
                 allowHTML: true,
                 placement: 'bottom',
                 onShow(instance) {
+                    circle.style.fill = '#38e';
                     nodeAttributes[id].dataset.ids.forEach(rowId => {
                         const row = document.querySelector(`#row_${rowId}`);
                         row.childNodes.forEach(child => {
-                            child.className = 'bg-danger';
+                            child.className = 'row-glowing';
                         })
                     })
                 },
                 onHide(instance) {
+                    circle.style.fill = '#26a';
                     nodeAttributes[id].dataset.ids.forEach(rowId => {
                         const row = document.querySelector(`#row_${rowId}`);
                         row.childNodes.forEach(child => {
-                            child.className = 'bg-dark';
+                            child.className = 'row-normal';
                         })
                     })
                 }
@@ -178,11 +189,14 @@ function update(root, element) {
   
     nodeEnter.append("text")
         .attr("y", function(d) { 
-            return d.children || d._children ? -18 : 18; })
+            return d.children || d._children ? -30 : 32; 
+        })
         .attr("dy", ".35em")
         .attr("text-anchor", "middle")
         .text(function(d) { return d.name; })
-        .style("fill-opacity", 1);
+        .style("fill-opacity", 1)
+        .style("font-size", "10pt")
+        .style("font-weight", "bold");
   
     // Declare the links…
     var link = svg.selectAll("path.link")
@@ -199,7 +213,8 @@ function update(root, element) {
 
     link.enter().append("text")
         .attr("x", function(d) {
-            return (d.source.x + d.target.x) / 2
+            let position = (d.source.x + d.target.x) / 2;
+            return (d.target.side === 'left') ? position - 15: position + 15;
         })
         .attr("y", function(d) {
             return (d.source.y + d.target.y) / 2
@@ -212,10 +227,11 @@ function update(root, element) {
                 return '';
             }
 
-            return (d.target.side === 'left') ? 'True': 'False';
+            return (d.target.side === 'left') ? 'T': 'F';
         })
         .style("fill-opacity", 1)
-        .style("font-size", "8pt");
+        .style("font-size", "9pt")
+        .style("font-weight", "bold");
 }
 
 export {node, nodeAttributes, update};

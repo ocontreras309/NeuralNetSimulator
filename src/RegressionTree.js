@@ -1,7 +1,7 @@
 import React from 'react';
 import rd3 from 'react-d3-library';
 import { node, nodeAttributes, update } from './d3tree';
-import ClassificationTreeDocumentation from './ClassificationTreeDocumentation';
+import RegressionTreeDocumentation from './RegressionTreeDocumentation';
 import { Link } from '@mui/material';
 const RD3Component = rd3.Component;
 
@@ -11,153 +11,44 @@ const COMPARISON_DISTINCT = 'distinct';
 const COMPARISON_GREATER_THAN = 'greater_than';
 const COMPARISON_LESS_THAN_OR_EQUAL = 'less_than_or_equal';
 const DATATYPE_CONTINUOUS = 'continuous';
-const IMPURITY_ENTROPY = 1;
-const IMPURITY_GINI = 2;
-const IMPURITY_MISCLASSIFICATION_ERROR = 3;
 const DIRECTION_LEFT = 1;
 const DIRECTION_RIGHT = 2;
-
-const impurityMeasures = [
-    IMPURITY_ENTROPY,
-    IMPURITY_GINI,
-    IMPURITY_MISCLASSIFICATION_ERROR
-];
-
-const impurityMeasureTexts = [
-    'Entropy',
-    'Gini Index',
-    'Misclassification error'
-];
 
 /**
  * Dataset declarations
  */
 
-const XOR_DATASET = {
+const HOUSING_DATASET = {
     data: {
-        'X1': ['0', '0', '1', '1'],
-        'X2': ['0', '1', '0', '1']
+        'SquareFeet': [40, 80, 100, 120, 150],
+        'Construction': ['Adobe', 'Brick', 'Brick', 'Adobe', 'Adobe']
     },
     target: {
-        'Y': ['0', '1', '1', '0']
+        'Price_K': [30, 80, 90, 45, 50]
     },
     datatypes: {
-        'X1': DATATYPE_CATEGORICAL,
-        'X2': DATATYPE_CATEGORICAL
+        'SquareFeet': DATATYPE_CONTINUOUS,
+        'Construction': DATATYPE_CATEGORICAL
     }
 };
 
-const ANIMALS_DATASET = {
+const SYSTOLIC_BP_DATASET = {
     data: {
-        'Teeth'   :  ['Yes', 'Yes', 'Yes', 'No', 'Yes', 'Yes', 'Yes', 'Yes', 'Yes', 'No'],
-        'Breathes':  ['Yes', 'Yes', 'Yes', 'No', 'Yes', 'Yes', 'No', 'Yes', 'Yes', 'Yes'],
-        'Paws'    :  ['Yes', 'Yes', 'No', 'Yes', 'Yes', 'Yes', 'No', 'No', 'Yes', 'Yes']
+        'Age':    [60, 61, 74, 57, 63, 68, 66, 77, 63, 54],
+        'Weight': [58, 90, 96, 72, 62, 79, 69, 96, 96, 54]
     },
     target: {
-        'Species' :  ['Mammal', 'Mammal', 'Reptile', 'Mammal', 'Mammal', 'Mammal', 'Reptile', 'Reptile', 'Mammal', 'Reptile']
-    },
-    datatypes: {
-        'Teeth'   :  DATATYPE_CATEGORICAL,
-        'Breathes':  DATATYPE_CATEGORICAL,
-        'Paws'    :  DATATYPE_CATEGORICAL,
-        'Species' :  DATATYPE_CATEGORICAL
-    }
-};
-
-const BORROWERS_DATASET = {
-    data: {
-        'HomeOwner': ['Yes', 'No', 'No', 'Yes', 'No', 'No', 'Yes', 'No', 'No', 'No'],
-        'MaritalStatus': ['Single', 'Married', 'Single', 'Married', 'Divorced', 'Married', 'Divorced', 'Single', 'Married', 'Single'],
-        'AnnualIncome': [125, 100, 70, 120, 95, 60, 220, 85, 75, 90]
-    },
-    target: {
-        'DefaultedBorrower': ['No', 'No', 'No', 'No', 'Yes', 'No', 'No', 'Yes', 'No', 'Yes']
-    },
-    datatypes: {
-        'HomeOwner': DATATYPE_CATEGORICAL,
-        'MaritalStatus': DATATYPE_CATEGORICAL,
-        'AnnualIncome': DATATYPE_CONTINUOUS
-    }
-};
-
-const HACKEREARTH_DATASET = {
-    data: {
-        'Weather': ['Sunny', 'Cloudy', 'Sunny', 'Cloudy', 'Rainy', 'Rainy', 'Rainy', 'Sunny', 'Cloudy', 'Rainy'],
-        'Temperature': [80, 66, 43, 82, 65, 42, 70, 81, 69, 67],
-        'Humidity': ['High', 'High', 'Normal', 'High', 'High', 'Normal', 'High', 'High', 'Normal', 'High'],
-        'Wind': ['Weak', 'Weak', 'Strong', 'Strong', 'Strong', 'Strong', 'Weak', 'Strong', 'Weak', 'Strong']
-    },
-    target: {
-        'Play?': ['No', 'Yes', 'Yes', 'Yes', 'No', 'No', 'Yes', 'No', 'Yes', 'No']
-    },
-    datatypes: {
-        'Weather': DATATYPE_CATEGORICAL,
-        'Temperature': DATATYPE_CONTINUOUS,
-        'Humidity': DATATYPE_CATEGORICAL,
-        'Wind': DATATYPE_CATEGORICAL
-    }
-}
-
-const DEVELOPER_DATASET = {
-    data: {
-        'Experience': [2, 4, 8, 10, 12],
-        'Python': ['No', 'Yes', 'No', 'No', 'No']
-    },
-    target: {
-        'Hired': ['No', 'Yes', 'No', 'Yes', 'Yes']
-    },
-    datatypes: {
-        'Experience': DATATYPE_CONTINUOUS,
-        'Python': DATATYPE_CATEGORICAL
-    }
-}
-
-const EDUCATION_DATASET = {
-    data: {
-        'Age': [34, 22, 45, 67, 19, 32, 55, 40, 28, 60, 25, 51, 48, 39, 44, 26, 59, 36, 20, 49, 30, 53, 41, 24, 38, 57, 21, 42, 64, 29, 50, 68, 23, 35, 52, 43, 61, 27, 46, 56, 33, 70, 37, 54, 31, 47, 65, 18, 58, 19, 63, 22],
-        'Education': ['Bachelor', 'Masters', 'PhD', 'Bachelor', 'High School', 'High School', 'PhD', 'Masters', 'Bachelor', 'Masters', 'PhD', 'Bachelor', 'High School', 'PhD', 'Masters', 'Bachelor', 'High School', 'High School', 'PhD', 'Masters', 'Bachelor', 'Masters', 'PhD', 'Bachelor', 'High School', 'PhD', 'Masters', 'Bachelor', 'Masters', 'PhD', 'Bachelor', 'High School', 'High School', 'PhD', 'Masters', 'Bachelor', 'Masters', 'PhD', 'Bachelor', 'High School', 'PhD', 'Masters', 'Bachelor', 'Masters', 'PhD', 'Bachelor', 'High School', 'High School'],
-        'Salary': [55000, 75000, 90000, 54000, 30000, 32000, 87000, 78000, 60000, 81000, 95000, 52000, 28000, 93000, 79000, 59000, 33000, 35000, 85000, 76000, 61000, 73000, 91000, 56000, 31000, 89000, 80000, 63000, 83000, 97000, 54000, 32000, 34000, 89000, 77000, 62000, 74000, 92000, 57000, 29000, 94000, 82000, 64000, 86000, 99000, 55000, 75000],
-        'Location': ['New York', 'California', 'Texas', 'Florida', 'New York', 'California', 'Texas', 'Florida', 'New York', 'California', 'Texas', 'Florida', 'New York', 'California', 'Texas', 'Florida', 'New York', 'California', 'Texas', 'Florida', 'New York', 'California', 'Texas', 'Florida', 'New York', 'California', 'Texas', 'Florida', 'New York', 'California', 'Texas', 'Florida', 'New York', 'California', 'Texas', 'Florida', 'New York', 'California', 'Texas', 'Florida', 'New York', 'California', 'Texas', 'Florida', 'New York', 'California'],
-        'Gender': ['Male', 'Female', 'Male', 'Female', 'Male', 'Male', 'Female', 'Female', 'Male', 'Female', 'Male', 'Female', 'Male', 'Female', 'Male', 'Female', 'Male', 'Male', 'Female', 'Female', 'Male', 'Female', 'Male', 'Female', 'Male', 'Male', 'Female', 'Female', 'Male', 'Female', 'Male', 'Female', 'Male', 'Male', 'Female', 'Female', 'Male', 'Female', 'Male', 'Female', 'Male', 'Male', 'Female', 'Female', 'Male', 'Female', 'Male'],
-    },
-    target: {
-        'Response': ['Yes', 'No', 'Yes', 'No', 'Yes', 'Yes', 'No', 'No', 'Yes', 'Yes', 'No', 'No', 'Yes', 'No', 'Yes', 'No', 'Yes', 'Yes', 'No', 'No', 'Yes', 'No', 'Yes', 'No', 'Yes', 'Yes', 'No', 'No', 'Yes', 'No', 'Yes', 'No', 'Yes', 'Yes', 'No', 'No', 'Yes', 'No', 'Yes', 'No', 'Yes', 'Yes', 'No', 'No', 'Yes', 'No', 'Yes'],
+        'Systolic BP': [117, 120, 145, 129, 132, 130, 110, 163, 136, 115]
     },
     datatypes: {
         'Age': DATATYPE_CONTINUOUS,
-        'Education': DATATYPE_CATEGORICAL,
-        'Salary': DATATYPE_CONTINUOUS,
-        'Location': DATATYPE_CATEGORICAL,
-        'Gender': DATATYPE_CATEGORICAL,
-        'Response': DATATYPE_CATEGORICAL,
+        'Weight': DATATYPE_CONTINUOUS
     }
-};
-
-const DIABETES_DATASET = {
-    data: {
-        'Glucose': [110, 125, 95, 140, 115, 120, 130, 118, 105, 100],
-        'BloodPressure': [70, 80, 65, 72, 75, 82, 90, 76, 68, 88],
-        'BMI': [26.6, 29.2, 24.8, 31.9, 27.1, 30, 28.3, 25.4, 23.8, 26.2],
-        'Age': [35, 40, 28, 45, 38, 42, 50, 33, 30, 36]
-    },
-    target: {
-        'Diabetes': ['No', 'Yes', 'No', 'Yes', 'No', 'No', 'Yes', 'No', 'No', 'Yes']
-    },
-    datatypes: {
-        'Glucose': DATATYPE_CONTINUOUS,
-        'BloodPressure': DATATYPE_CONTINUOUS,
-        'BMI': DATATYPE_CONTINUOUS,
-        'Age': DATATYPE_CONTINUOUS
-    }
-};
+}
 
 const datasets = {
-    'XOR': XOR_DATASET,
-    'Borrowers': BORROWERS_DATASET,
-    'Animals': ANIMALS_DATASET,
-    'HackerEarth': HACKEREARTH_DATASET,
-    'Developer': DEVELOPER_DATASET,
-    'Education': EDUCATION_DATASET
+    'Housing': HOUSING_DATASET,
+    'Systolic BP': SYSTOLIC_BP_DATASET
 };
 
 /**
@@ -204,19 +95,18 @@ const columnComparisonCallback = (value, comparison, columnValue) => {
 /**
  * Main class
  */
-class ClassificationTree extends React.Component {
+class RegressionTree extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             tree: {}
         }
-        this.impurityType = IMPURITY_ENTROPY;
-        this.datasetname = 'XOR';
+        
+        this.datasetname = 'Housing';
         this.history = [];
         this.historyActive = false;
         this.idCount = 1;
         this.state.dataset = datasets[this.datasetname];
-        this.open = false;
     }
 
     /**
@@ -250,63 +140,37 @@ class ClassificationTree extends React.Component {
      * Calculate a single attribute impurity value
      * as well as other information that is required to display the calculation procedure
      */
-    calculateAttributeImpurity(data, counts, column, columnValue, targetName, targetValues, uniqueTargetValues, comparison, impurityType) {
+    calculateAttributeImpurity(data, counts, unfilteredTargets, column, columnValue, comparison) {
         let impurityResult = {
             impurityCalculationText: '',
             columnProbabilityText: ''
         };
-        let impurity = 0.0;
-        let totalRecords = data[column].length;
+        
+        let filteredTargets = unfilteredTargets.filter(((_, i) => {
+            return columnComparisonCallback(data[column][i], comparison, columnValue);
+        }));
 
-        let total = data[column].filter(value => columnComparisonCallback(value, comparison, columnValue)).length;
-        let maxProb = 0.0;
+        counts[`${column}_${columnValue}`] = data[column].filter(value => columnComparisonCallback(value, comparison, columnValue)).length;
+        let total = data[column].length;
+        let variance = 0;
+        let impurityCalculationText = '';
 
-        if (total !== 0) {
-            for (let targetValue of uniqueTargetValues) {
-                counts[`${targetName}_${targetValue}`][`${column}_${columnValue}`] = data[column].filter((value, i) => columnComparisonCallback(value, comparison, columnValue) && targetValues[i] === targetValue).length;
-                let prob = counts[`${targetName}_${targetValue}`][`${column}_${columnValue}`] / total;
-                let probText = '\\frac{' + counts[`${targetName}_${targetValue}`][`${column}_${columnValue}`] + '}{' + total + '}';
+        if (filteredTargets.length > 0) {
+            let mean = filteredTargets.reduce((sum, targetValue) => sum + targetValue, 0) / filteredTargets.length;
+            
+            variance = filteredTargets.reduce((sum, targetValue) => {
+                let diff = targetValue - mean;
+                impurityCalculationText += ((impurityCalculationText === '') ? '' : '+') + `(${targetValue}-${Math.round(mean * 100) / 100})^2`;
+                return sum + diff * diff;
+            }, 0) / filteredTargets.length;
 
-                if (prob !== 0) {
-                    switch (impurityType) {
-                        case IMPURITY_ENTROPY:
-                            impurity -= prob * Math.log2(prob);
-                            impurityResult.impurityCalculationText += `+\\begin{matrix}${probText}\\end{matrix}\\times \\log_2\\begin{pmatrix}${probText}\\end{pmatrix}`;
-                            break;
-                        case IMPURITY_GINI:
-                            impurity += prob * prob;
-                            impurityResult.impurityCalculationText += `+\\begin{pmatrix}${probText}\\end{pmatrix}^2`;
-                            break;
-                        case IMPURITY_MISCLASSIFICATION_ERROR:
-                            if (prob > maxProb) {
-                                impurity = prob;
-                            }
-                            impurityResult.impurityCalculationText += `,${probText}`;
-                            break;
-                    }
-                }
-            }
+            impurityCalculationText = `\\frac{${impurityCalculationText}}{${filteredTargets.length}}`;
         }
 
-        let finalImpurity = 0.0;
-
-        switch (impurityType) {
-            case IMPURITY_ENTROPY:
-                finalImpurity = impurity;
-                impurityResult.impurityCalculationText = `-\\{${impurityResult.impurityCalculationText.substring(1)}\\}`;
-                break;
-            case IMPURITY_GINI:
-                finalImpurity = 1 - impurity;
-                impurityResult.impurityCalculationText = `1-\\{${impurityResult.impurityCalculationText.substring(1)}\\}`;
-                break;
-            case IMPURITY_MISCLASSIFICATION_ERROR:
-                finalImpurity = 1 - impurity;
-                impurityResult.impurityCalculationText = `1-\\max\\begin{pmatrix}${impurityResult.impurityCalculationText.substring(1)}\\end{pmatrix}`;
-        }
-
-        impurityResult.columnProbability = total / totalRecords;
-        impurityResult.columnProbabilityText = `\\frac{${total}}{${totalRecords}}`;
-        impurityResult.finalImpurity = finalImpurity;
+        impurityResult.impurityCalculationText = impurityCalculationText;
+        impurityResult.columnProbability = counts[`${column}_${columnValue}`] / total;
+        impurityResult.columnProbabilityText = `\\frac{${counts[`${column}_${columnValue}`]}}{${total}}`;
+        impurityResult.finalImpurity = variance;
         
         return impurityResult;
     }
@@ -315,20 +179,14 @@ class ClassificationTree extends React.Component {
      * Calculate an overall column impurity
      * and report the total impurity values and calculation procedures
      */
-    calculateColumnImpurity(dataset, column, impurityType) {
+    calculateColumnImpurity(dataset, column) {
         const data = dataset.data;
-        const targetName = Object.keys(dataset.target)[0];
-        const targetValues = Object.values(dataset.target)[0];
+        const unfilteredTargets = dataset.target[Object.keys(dataset.target)[0]];
         const types = dataset.datatypes;
-        let uniqueTargetValues = targetValues.filter((v, i, a) => a.indexOf(v) === i);
         let impurities = {};
 
         let columnValues = data[column].filter((v, i, a) => a.indexOf(v) === i);
         let counts = {};
-
-        for (let targetValue of uniqueTargetValues) {
-            counts[`${targetName}_${targetValue}`] = {};
-        }
 
         // If this is a binary column, then perform impurity evaluation just once.
         if (columnValues.length === 2) {
@@ -338,26 +196,13 @@ class ClassificationTree extends React.Component {
         // Get impurity values for each unique column value or midpoint
         if (types[column] === DATATYPE_CATEGORICAL) {
             columnValues.forEach(columnValue => {
-                let impurityLeft = this.calculateAttributeImpurity(data, counts, column, columnValue, targetName, targetValues, uniqueTargetValues, COMPARISON_EQUAL, impurityType);
-                let impurityRight = this.calculateAttributeImpurity(data, counts, column, columnValue, targetName, targetValues, uniqueTargetValues, COMPARISON_DISTINCT, impurityType);
+                let impurityLeft = this.calculateAttributeImpurity(data, counts, unfilteredTargets, column, columnValue, COMPARISON_EQUAL);
+                let impurityRight = this.calculateAttributeImpurity(data, counts, unfilteredTargets, column, columnValue, COMPARISON_DISTINCT);
                 let leftImpurityResultText, rightImpurityResultText;
 
                 impurities[columnValue] = impurityLeft.finalImpurity + impurityRight.finalImpurity;
-
-                switch (this.impurityType) {
-                    case IMPURITY_ENTROPY:
-                        leftImpurityResultText = `H(${column}=${columnValue})=${impurityLeft.impurityCalculationText}=${Math.round(impurityLeft.finalImpurity * 100) / 100}`;
-                        rightImpurityResultText = `H(${column}!=${columnValue})=${impurityRight.impurityCalculationText}=${Math.round(impurityRight.finalImpurity * 100) / 100}`;
-                        break;
-                    case IMPURITY_GINI:
-                        leftImpurityResultText = `Gini(${column}=${columnValue})=${impurityLeft.impurityCalculationText}=${Math.round(impurityLeft.finalImpurity * 100) / 100}`;
-                        rightImpurityResultText = `Gini(${column}!=${columnValue})=${impurityRight.impurityCalculationText}=${Math.round(impurityRight.finalImpurity * 100) / 100}`;
-                        break;
-                    case IMPURITY_MISCLASSIFICATION_ERROR:
-                        leftImpurityResultText = `Error(${column}=${columnValue})=${impurityLeft.impurityCalculationText}=${Math.round(impurityLeft.finalImpurity * 100) / 100}`;
-                        rightImpurityResultText = `Error(${column}!=${columnValue})=${impurityRight.impurityCalculationText}=${Math.round(impurityRight.finalImpurity * 100) / 100}`;
-                        break;
-                }
+                leftImpurityResultText = `Var(${column}=${columnValue})=${impurityLeft.impurityCalculationText}=${Math.round(impurityLeft.finalImpurity * 100) / 100}`;
+                rightImpurityResultText = `Var(${column}!=${columnValue})=${impurityRight.impurityCalculationText}=${Math.round(impurityRight.finalImpurity * 100) / 100}`;
 
                 let impurityValue = impurityLeft.columnProbability * impurityLeft.finalImpurity + impurityRight.columnProbability *  impurityRight.finalImpurity; 
 
@@ -373,24 +218,12 @@ class ClassificationTree extends React.Component {
             let leftImpurityResultText, rightImpurityResultText;
 
             midpoints.forEach(midpoint => {
-                let impurityLeft = this.calculateAttributeImpurity(data, counts, column, midpoint, targetName, targetValues, uniqueTargetValues, COMPARISON_LESS_THAN_OR_EQUAL, impurityType);
-                let impurityRight = this.calculateAttributeImpurity(data, counts, column, midpoint, targetName, targetValues, uniqueTargetValues, COMPARISON_GREATER_THAN, impurityType);
+                let impurityLeft = this.calculateAttributeImpurity(data, counts, unfilteredTargets, column, midpoint, COMPARISON_LESS_THAN_OR_EQUAL);
+                let impurityRight = this.calculateAttributeImpurity(data, counts, unfilteredTargets, column, midpoint, COMPARISON_GREATER_THAN);
                 impurities[midpoint] = impurityLeft.finalImpurity + impurityRight.finalImpurity;
 
-                switch (this.impurityType) {
-                    case IMPURITY_ENTROPY:
-                        leftImpurityResultText = `H(${column}<=${midpoint})=${impurityLeft.impurityCalculationText}=${Math.round(impurityLeft.finalImpurity * 100) / 100}`;
-                        rightImpurityResultText = `H(${column}>${midpoint})=${impurityRight.impurityCalculationText}=${Math.round(impurityRight.finalImpurity * 100) / 100}`;
-                        break;
-                    case IMPURITY_GINI:
-                        leftImpurityResultText = `Gini(${column}<=${midpoint})=${impurityLeft.impurityCalculationText}=${Math.round(impurityLeft.finalImpurity * 100) / 100}`;
-                        rightImpurityResultText = `Gini(${column}>${midpoint})=${impurityRight.impurityCalculationText}=${Math.round(impurityRight.finalImpurity * 100) / 100}`;
-                        break;
-                    case IMPURITY_MISCLASSIFICATION_ERROR:
-                        leftImpurityResultText = `Error(${column}<=${midpoint})=${impurityLeft.impurityCalculationText}=${Math.round(impurityLeft.finalImpurity * 100) / 100}`;
-                        rightImpurityResultText = `Error(${column}>${midpoint})=${impurityRight.impurityCalculationText}=${Math.round(impurityRight.finalImpurity * 100) / 100}`;
-                        break;
-                }
+                leftImpurityResultText = `Var(${column}<=${midpoint})=${impurityLeft.impurityCalculationText}=${Math.round(impurityLeft.finalImpurity * 100) / 100}`;
+                rightImpurityResultText = `Var(${column}>${midpoint})=${impurityRight.impurityCalculationText}=${Math.round(impurityRight.finalImpurity * 100) / 100}`;
 
                 let impurityValue = impurityLeft.columnProbability * impurityLeft.finalImpurity + impurityRight.columnProbability *  impurityRight.finalImpurity; 
 
@@ -414,7 +247,7 @@ class ClassificationTree extends React.Component {
         let impurities = {};
 
         for (let column in data) {        
-            impurities[column] = this.calculateColumnImpurity(dataset, column, this.impurityType);
+            impurities[column] = this.calculateColumnImpurity(dataset, column);
         }
 
         return impurities;
@@ -427,7 +260,7 @@ class ClassificationTree extends React.Component {
     findOptimalAttribute(dataset) {
         let impurities = this.calculateImpurities(dataset);
         let selectedAttribute = null;
-        let minImpurity = 10.0;
+        let minImpurity = Number.MAX_VALUE;
 
         for (let columnName in impurities) {
             let column = impurities[columnName];
@@ -556,9 +389,9 @@ class ClassificationTree extends React.Component {
     }
 
     /**
-     * Main method for building the classification tree
+     * Main method for building the regression tree
      */
-    buildClassificationTree() {
+    buildRegressionTree() {
         let selectedAttribute = this.findOptimalAttribute(this.state.dataset);
         let leftNode = this.createTreeNode(this.state.dataset, selectedAttribute, DIRECTION_LEFT);
         let rightNode = this.createTreeNode(this.state.dataset, selectedAttribute, DIRECTION_RIGHT);
@@ -650,8 +483,6 @@ class ClassificationTree extends React.Component {
             tree: {}
         });
         this.historyActive = false;
-        this.impurityType = parseInt(event.target.value);
-        this.datasetname = this.datasetname + '_impurity_' + this.impurityType;
     }
 
     /**
@@ -756,7 +587,7 @@ class ClassificationTree extends React.Component {
         }
 
         let rows = this.state.dataset.target[key].map((_, i) => {
-            return <tr key={ this.state.dataset.ids[i] } id={ 'row_' + this.state.dataset.ids[i] } className='row-normal'>
+            return <tr key={ this.state.dataset.ids[i] } id={ 'row_' + this.state.dataset.ids[i] }  className='row-normal'>
                 {
                     columns.map(column => {
                         return <td key={ column }>
@@ -823,7 +654,7 @@ class ClassificationTree extends React.Component {
             this.generateDatasetIds();
         }
 
-        this.buildClassificationTree();
+        this.buildRegressionTree();
         let treeData;
         
         if (this.historyActive) {
@@ -834,13 +665,13 @@ class ClassificationTree extends React.Component {
 
         return (
             <div>
-                <div className='container d-flex justify-content-center p-2'>
-                    <h3><strong>Classification Trees</strong></h3>
+                <div className='container d-flex justify-content-center pt-2'>
+                    <h3><strong>Regression Trees</strong></h3>
                 </div>
                 <div className='container d-flex justify-content-center'>
                     <Link onClick={ () => this.handleOpenDocumentation() }><img src='./documentation-icon.jpeg' />See documentation</Link>
                 </div>
-                <ClassificationTreeDocumentation handleClose={ () => this.handleCloseDocumentation() } open={ this.open } />
+                <RegressionTreeDocumentation handleClose={ () => this.handleCloseDocumentation() } open={ this.open } />
                 <div className='container'>
                     <div className='row'>
                         <form className='row'>
@@ -854,16 +685,6 @@ class ClassificationTree extends React.Component {
                                     }
                                 </select>
                             </div>
-                            <div className='col'>
-                                <label className='form-label'>Choose impurity measure:</label>
-                                <select className='form-control' onChange={ event => this.handleImpurityMeasureChange(event) }>
-                                    {
-                                        impurityMeasures.map((impurityMeasure, i) => (
-                                            <option key={ `impurityMeasure_${i}` } value={ impurityMeasure }>{ impurityMeasureTexts[i] }</option>
-                                        ))
-                                    }
-                                </select>
-                            </div>
                         </form>
                     </div>
                     <div className='row'>
@@ -871,7 +692,7 @@ class ClassificationTree extends React.Component {
                             <h3>Dataset:</h3>
                             { this.visualizeDataset() }
                         </div>
-                        <div className='col p-3' style={{ textAlign: "center" }}>
+                        <div className='col tree-display p-3' style={{ textAlign: "center" }}>
                             <h3>Tree:</h3>
                             <div className='d-flex justify-content-center'>
                                 <div className='d-flex flex-direction-horizontal'>
@@ -884,7 +705,7 @@ class ClassificationTree extends React.Component {
                             <p>
                                 Click on one of the nodes to see further details.
                             </p>
-                            <div className='d-flex justify-content-center extended-'>
+                            <div className='d-flex justify-content-center extended-height'>
                                 <DecisionTreeNode key={ this.datasetname } treeData={ treeData } />
                             </div>
                         </div>
@@ -895,4 +716,4 @@ class ClassificationTree extends React.Component {
     }
 }
 
-export default ClassificationTree;
+export default RegressionTree;
