@@ -46,9 +46,37 @@ const SYSTOLIC_BP_DATASET = {
     }
 }
 
+const ACADEMIC_PERFORMANCE_DATASET = {
+    data: {
+      Age: [20, 22, 21, 19, 23, 18, 24],
+      Major: [
+        "Engineering",
+        "Medicine",
+        "Law",
+        "Computer Science",
+        "Economics",
+        "Psychology",
+        "Physics",
+        "Business",
+      ],
+      Daily_Study_Hours: [5, 6, 4, 7, 5, 6, 5],
+      Distance_km: [2, 1, 5, 3, 4, 1, 3],
+    },
+    target: {
+      Academic_Performance: [85, 92, 78, 88, 80, 75, 90],
+    },
+    datatypes: {
+      Age: DATATYPE_CONTINUOUS,
+      Major: DATATYPE_CATEGORICAL,
+      Daily_Study_Hours: DATATYPE_CONTINUOUS,
+      Distance_km: DATATYPE_CONTINUOUS,
+    },
+  };
+
 const datasets = {
     'Housing': HOUSING_DATASET,
-    'Systolic BP': SYSTOLIC_BP_DATASET
+    'Systolic BP': SYSTOLIC_BP_DATASET,
+    'Academic performance': ACADEMIC_PERFORMANCE_DATASET
 };
 
 /**
