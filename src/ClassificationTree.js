@@ -379,15 +379,15 @@ class ClassificationTree extends React.Component {
 
                 switch (this.impurityType) {
                     case IMPURITY_ENTROPY:
-                        leftImpurityResultText = `H(${column}<=${midpoint})=${impurityLeft.impurityCalculationText}=${Math.round(impurityLeft.finalImpurity * 100) / 100}`;
+                        leftImpurityResultText = `H(${column}\\leq ${midpoint})=${impurityLeft.impurityCalculationText}=${Math.round(impurityLeft.finalImpurity * 100) / 100}`;
                         rightImpurityResultText = `H(${column}>${midpoint})=${impurityRight.impurityCalculationText}=${Math.round(impurityRight.finalImpurity * 100) / 100}`;
                         break;
                     case IMPURITY_GINI:
-                        leftImpurityResultText = `Gini(${column}<=${midpoint})=${impurityLeft.impurityCalculationText}=${Math.round(impurityLeft.finalImpurity * 100) / 100}`;
+                        leftImpurityResultText = `Gini(${column}\\leq ${midpoint})=${impurityLeft.impurityCalculationText}=${Math.round(impurityLeft.finalImpurity * 100) / 100}`;
                         rightImpurityResultText = `Gini(${column}>${midpoint})=${impurityRight.impurityCalculationText}=${Math.round(impurityRight.finalImpurity * 100) / 100}`;
                         break;
                     case IMPURITY_MISCLASSIFICATION_ERROR:
-                        leftImpurityResultText = `Error(${column}<=${midpoint})=${impurityLeft.impurityCalculationText}=${Math.round(impurityLeft.finalImpurity * 100) / 100}`;
+                        leftImpurityResultText = `Error(${column}\\leq ${midpoint})=${impurityLeft.impurityCalculationText}=${Math.round(impurityLeft.finalImpurity * 100) / 100}`;
                         rightImpurityResultText = `Error(${column}>${midpoint})=${impurityRight.impurityCalculationText}=${Math.round(impurityRight.finalImpurity * 100) / 100}`;
                         break;
                 }

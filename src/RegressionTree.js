@@ -250,7 +250,7 @@ class RegressionTree extends React.Component {
                 let impurityRight = this.calculateAttributeImpurity(data, counts, unfilteredTargets, column, midpoint, COMPARISON_GREATER_THAN);
                 impurities[midpoint] = impurityLeft.finalImpurity + impurityRight.finalImpurity;
 
-                leftImpurityResultText = `Var(${column}<=${midpoint})=${impurityLeft.impurityCalculationText}=${Math.round(impurityLeft.finalImpurity * 100) / 100}`;
+                leftImpurityResultText = `Var(${column}\\leq ${midpoint})=${impurityLeft.impurityCalculationText}=${Math.round(impurityLeft.finalImpurity * 100) / 100}`;
                 rightImpurityResultText = `Var(${column}>${midpoint})=${impurityRight.impurityCalculationText}=${Math.round(impurityRight.finalImpurity * 100) / 100}`;
 
                 let impurityValue = impurityLeft.columnProbability * impurityLeft.finalImpurity + impurityRight.columnProbability *  impurityRight.finalImpurity; 
