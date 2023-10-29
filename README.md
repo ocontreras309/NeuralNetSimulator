@@ -30,5 +30,7 @@ Special thanks to my students at Univalle, who contributed with interesting impr
 Enjoy!
 
 © 2023. By Oscar Contreras Carrasco
+
 LinkedIn: https://www.linkedin.com/in/oscar-contreras/
+
 Cochabamba - Bolivia
