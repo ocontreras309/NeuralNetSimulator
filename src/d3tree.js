@@ -26,12 +26,11 @@ var diagonal = d3.svg.diagonal()
 var svg;
 
 /**
- * Generate node generation data, including the dataset as well as impurity calculations
+ * Define which side of the partition the given data belongs to
+ * Mainly to decide on what colour should be assigned to specific rows
  */
 
 function getDatasetSide(dataset, index, bestFeature, bestValue) {
-    console.log(dataset, index, bestFeature, bestValue)
-    
     if (bestFeature === undefined) {
         return null;
     }
@@ -40,6 +39,10 @@ function getDatasetSide(dataset, index, bestFeature, bestValue) {
                 (dataset.data[bestFeature][index] <= bestValue) ? DATASET_SIDE_LEFT : DATASET_SIDE_RIGHT :
                 (dataset.data[bestFeature][index] === bestValue) ? DATASET_SIDE_LEFT : DATASET_SIDE_RIGHT;
 }
+
+/**
+ * Generate node generation data, including the dataset as well as impurity calculations
+ */
 
 function generateNodeData(reportId, impurityReport, dataset) {
     const div = document.createElement('div');
