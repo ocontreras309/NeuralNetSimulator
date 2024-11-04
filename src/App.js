@@ -34,8 +34,13 @@ function App() {
   return (
     <div className='App-main'>
       <div className='container p-3 text-white rounded banner w-100 d-flex'>
-        <h1>Learn Machine Learning</h1>
-        <img src='robot.png' className='ms-auto' />
+        <div>
+          <h1>Learn Machine Learning</h1>
+          <h6 className='ms-auto'>Developed by <a href="https://www.linkedin.com/in/oscar-contreras/" className='text-warning' target='blank'>Oscar Contreras Carrasco</a> et al.</h6>
+        </div>
+        <div className='ms-auto'>
+          <img src='robot.png' className='ms-auto float-right' />
+        </div>
       </div>
       <div class="container d-flex flex-row p-3">
         <button className={ (contentId === OPT_CLASSIFICATION_TREE) ? "btn btn-secondary w-100 rounded-pill menu-button mx-2" : "btn btn-info w-100 rounded-pill menu-button mx-2" } onClick={ () => handleClick(OPT_CLASSIFICATION_TREE) }>Classification tree</button>

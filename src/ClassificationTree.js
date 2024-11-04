@@ -151,13 +151,43 @@ const DIABETES_DATASET = {
     }
 };
 
+const LOAN_DATASET = {
+    data: {
+        'Marital status': ['Single', 'Single', 'Married', 'Divorced', 'Divorced'],
+        'Indebted': ['Yes', 'No', 'Yes', 'No', 'Yes']
+    },
+    target: {
+        'Approve loan': ['Yes', 'Yes', 'No', 'Yes', 'No']
+    },
+    datatypes: {
+        'Marital status': DATATYPE_CATEGORICAL,
+        'Indebted': DATATYPE_CATEGORICAL
+    }
+}
+
+const OVERWEIGHT_DATASET = {
+    data: {
+        'Peso': [55, 65, 80, 90, 50],
+        'Talla': [150, 160, 185, 180, 140]
+    },
+    target: {
+        'Sobrepeso': ['No', 'Si', 'No', 'Si', 'Si']
+    },
+    datatypes: {
+        'Peso': DATATYPE_CONTINUOUS,
+        'Talla': DATATYPE_CONTINUOUS
+    }
+}
+
 const datasets = {
     'XOR': XOR_DATASET,
     'Borrowers': BORROWERS_DATASET,
     'Animals': ANIMALS_DATASET,
     'HackerEarth': HACKEREARTH_DATASET,
     'Developer': DEVELOPER_DATASET,
-    'Education': EDUCATION_DATASET
+    'Education': EDUCATION_DATASET,
+    'Loans': LOAN_DATASET,
+    'Overweight': OVERWEIGHT_DATASET
 };
 
 /**

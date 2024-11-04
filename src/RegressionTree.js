@@ -73,10 +73,25 @@ const ACADEMIC_PERFORMANCE_DATASET = {
     },
   };
 
+const VISCACHA_POPULATION = {
+    data: {
+        'Temp': [-2, 4, -6, 8],
+        'Rain': ['Mild', 'Moderate', 'Intense', 'Intense']
+    },
+    target: {
+        'Population': [-4, 4, -14, 14]
+    },
+    datatypes: {
+        'Temp': DATATYPE_CONTINUOUS,
+        'Rain': DATATYPE_CATEGORICAL
+    }
+}
+
 const datasets = {
     'Housing': HOUSING_DATASET,
     'Systolic BP': SYSTOLIC_BP_DATASET,
-    'Academic performance': ACADEMIC_PERFORMANCE_DATASET
+    'Academic performance': ACADEMIC_PERFORMANCE_DATASET,
+    'Viscacha population': VISCACHA_POPULATION
 };
 
 /**
