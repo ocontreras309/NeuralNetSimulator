@@ -35,7 +35,7 @@ class ClassificationTreeDocumentation extends React.Component {
                         <div style={{ textAlign: 'justify' }}>
                             These are by far among the most popular algorithms in supervised learning. The key 
                             insight of classification trees is to find the best partitions among all possibilities
-                            in given dataset.
+                            in a given dataset.
                         </div>
                         <div style={{ textAlign: 'justify' }}>
                             In order to determine the best possible partition for a given node, we must use a relevant partition metric. 
