@@ -39,7 +39,7 @@ function App() {
           <h6 className='ms-auto'>Developed by <a href="https://www.linkedin.com/in/oscar-contreras/" className='text-warning' target='blank'>Oscar Contreras Carrasco</a> et al.</h6>
         </div>
         <div className='ms-auto'>
-          <img src='robot.png' className='ms-auto float-right' />
+          <img src='robot.png' />
         </div>
       </div>
       <div class="container d-flex flex-row p-3">
